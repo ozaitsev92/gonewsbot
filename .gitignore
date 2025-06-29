@@ -1,0 +1,72 @@
+# Go binaries and build output
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.a
+
+# Go module cache temp file
+go.sum.tmp
+
+# Build output folders (adjust if you use different ones)
+bin/
+build/
+dist/
+
+# Go coverage & testing
+*.coverprofile
+*.coverage
+*.testresult
+
+# Dependency directory (ignore if you don't commit vendor/)
+vendor/
+
+# Temporary and generated files
+*.tmp
+tmp/
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Local environment/config files
+.env
+.env.*
+*.local
+!.env.example
+
+# Docker-related
+docker-compose.override.yml
+*.pid
+*.tar
+*.img
+.docker/
+.dockerignore
+
+# Makefile artifacts (optional)
+*.mk
+*.dep
+*.d
+*.o
+
+# GolangCI-Lint
+.golangci.yml
+golangci-lint-report.json
+
+# Air (live reload tool for Go)
+.air.toml
+tmp/

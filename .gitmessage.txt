@@ -1,0 +1,27 @@
+# <type>(<scope>): <short summary>
+#
+# Example:
+# feat(auth): add JWT-based login
+# fix(api): handle null pointer exception in user endpoint
+# chore: initial commit
+#
+# Commit types:
+#   feat     A new feature
+#   fix      A bug fix
+#   docs     Documentation only changes
+#   style    Changes that do not affect meaning (white-space, formatting)
+#   refactor Code changes that neither fix a bug nor add a feature
+#   test     Adding or updating tests
+#   chore    Other changes (build process, tooling, dependencies)
+#   ci       Continuous integration related changes
+#
+# Scope (optional): A noun describing what part of the code is affected
+#
+# --------------------
+# Leave a blank line above this comment to separate the body.
+#
+# Body (optional):
+# Explain what and why (not how). Wrap lines at 72 characters.
+#
+# Footer (optional):
+# Use for issue references (e.g. Closes #123), breaking changes, etc.
