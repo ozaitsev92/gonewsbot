@@ -17,6 +17,8 @@ type Config struct {
 	FilterKeywords       []string      `env:"FILTER_KEYWORDS"`
 	OpenAIKey            string        `env:"OPENAI_KEY" required:"true"`
 	OpenAIPrompt         string        `env:"OPENAI_PROMPT" required:"true"`
+	OpenAIModel          string        `env:"OPENAI_MODEL" default:"gpt-3.5-turbo"`
+	HTTPBindAddress      string        `env:"HTTP_BIND_ADDRESS" default:":8080"`
 }
 
 var cfg Config

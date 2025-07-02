@@ -22,7 +22,7 @@ type ArticlesProvider interface {
 }
 
 type Summarizer interface {
-	Summarize(ctx context.Context, text string) (string, error)
+	Summarize(text string) (string, error)
 }
 
 type Notifier struct {
@@ -108,7 +108,7 @@ func (n *Notifier) SelectAndSendArticle(ctx context.Context) error {
 		return err
 	}
 
-	if err := n.sendArticle(ctx, article, summary); err != nil {
+	if err := n.sendArticle(article, summary); err != nil {
 		return err
 	}
 
@@ -147,7 +147,7 @@ func (n *Notifier) extractSummary(ctx context.Context, article model.Article) (s
 		return "", err
 	}
 
-	summary, err := n.summarizer.Summarize(ctx, cleanText(doc.TextContent))
+	summary, err := n.summarizer.Summarize(cleanText(doc.TextContent))
 	if err != nil {
 		return "", err
 	}
@@ -155,7 +155,7 @@ func (n *Notifier) extractSummary(ctx context.Context, article model.Article) (s
 	return "\n\n" + summary, nil
 }
 
-func (n *Notifier) sendArticle(ctx context.Context, article model.Article, summary string) error {
+func (n *Notifier) sendArticle(article model.Article, summary string) error {
 	const msgFormat = "*%s*%s\n\n%s"
 
 	msg := tgbotapi.NewMessage(
