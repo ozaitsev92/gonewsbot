@@ -19,10 +19,8 @@ type Config struct {
 	OpenAIPrompt         string        `env:"OPENAI_PROMPT" required:"true"`
 }
 
-var (
-	cfg  Config
-	once sync.Once
-)
+var cfg Config
+var once sync.Once
 
 func Get() Config {
 	once.Do(func() {

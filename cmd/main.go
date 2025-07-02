@@ -10,6 +10,9 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/jmoiron/sqlx"
+	"github.com/ozaitsev92/gonewsbot/internal/bot"
+	"github.com/ozaitsev92/gonewsbot/internal/bot/middleware"
+	"github.com/ozaitsev92/gonewsbot/internal/botkit"
 	"github.com/ozaitsev92/gonewsbot/internal/config"
 	"github.com/ozaitsev92/gonewsbot/internal/fetcher"
 	"github.com/ozaitsev92/gonewsbot/internal/notifier"
@@ -54,6 +57,43 @@ func main() {
 		config.Get().TelegramChannelID,
 	)
 
+	newsBot := botkit.New(botAPI)
+	newsBot.RegisterCmdView(
+		"addsource",
+		middleware.AdminsOnly(
+			config.Get().TelegramChannelID,
+			bot.ViewCmdAddSource(sourcesStorage),
+		),
+	)
+	newsBot.RegisterCmdView(
+		"setpriority",
+		middleware.AdminsOnly(
+			config.Get().TelegramChannelID,
+			bot.ViewCmdSetPriority(sourcesStorage),
+		),
+	)
+	newsBot.RegisterCmdView(
+		"getsource",
+		middleware.AdminsOnly(
+			config.Get().TelegramChannelID,
+			bot.ViewCmdGetSource(sourcesStorage),
+		),
+	)
+	newsBot.RegisterCmdView(
+		"listsources",
+		middleware.AdminsOnly(
+			config.Get().TelegramChannelID,
+			bot.ViewCmdListSource(sourcesStorage),
+		),
+	)
+	newsBot.RegisterCmdView(
+		"deletesource",
+		middleware.AdminsOnly(
+			config.Get().TelegramChannelID,
+			bot.ViewCmdDeleteSource(sourcesStorage),
+		),
+	)
+
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 
@@ -77,12 +117,7 @@ func main() {
 		}
 	}(ctx)
 
-	<-ctx.Done()
-	slog.Info("shutting down gracefully")
-
-	if err := db.Close(); err != nil {
-		slog.Error("failed to close database connection", "error", err)
+	if err := newsBot.Run(ctx); err != nil {
+		slog.Error("bot stopped with error", "error", err)
 	}
-
-	slog.Info("shutdown complete")
 }

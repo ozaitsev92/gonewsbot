@@ -14,6 +14,7 @@ type dbSource struct {
 	ID        int64     `db:"id"`
 	Name      string    `db:"name"`
 	FeedURL   string    `db:"feed_url"`
+	Priority  int       `db:"priority"`
 	CreatedAt time.Time `db:"created_at"`
 }
 
@@ -105,6 +106,21 @@ func (s *SourcePostgresStorage) AddSource(ctx context.Context, source model.Sour
 	}
 
 	return id, nil
+}
+
+func (s *SourcePostgresStorage) SetPriority(ctx context.Context, id int64, priority int) error {
+	conn, err := s.db.Conn(ctx)
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+
+	_, err = conn.ExecContext(ctx, "UPDATE sources SET priority = $1 WHERE id = $2", priority, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (s *SourcePostgresStorage) DeleteSource(ctx context.Context, id int64) error {
