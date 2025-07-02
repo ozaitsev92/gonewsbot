@@ -70,8 +70,28 @@ func NewNotifier(
 	}
 }
 
+func (n *Notifier) Start(ctx context.Context) error {
+	ticker := time.NewTicker(n.sendInterval)
+	defer ticker.Stop()
+
+	if err := n.SelectAndSendArticle(ctx); err != nil {
+		return err
+	}
+
+	for {
+		select {
+		case <-ticker.C:
+			if err := n.SelectAndSendArticle(ctx); err != nil {
+				return err
+			}
+		case <-ctx.Done():
+			return ctx.Err()
+		}
+	}
+}
+
 // todo: wrap the body of this method in a transaction
-func (n *Notifier) SelectAndSendArticles(ctx context.Context) error {
+func (n *Notifier) SelectAndSendArticle(ctx context.Context) error {
 	topOneArticles, err := n.articles.AllNotPosted(ctx, time.Now().Add(-n.lookupTimeWindow), 1)
 	if err != nil {
 		return err
