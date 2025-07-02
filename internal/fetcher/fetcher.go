@@ -2,6 +2,7 @@ package fetcher
 
 import (
 	"context"
+	"log/slog"
 	"strings"
 	"sync"
 	"time"
@@ -79,12 +80,12 @@ func (f *Fetcher) Fetch(ctx context.Context) error {
 
 			items, err := source.Fetch(ctx)
 			if err != nil {
-				//todo: log error
+				slog.Error("failed to fetch items", "source", source.Name(), "error", err)
 				return
 			}
 
 			if err := f.processItems(ctx, source, items); err != nil {
-				//todo: log error
+				slog.Error("failed to process items", "source", source.Name(), "error", err)
 				return
 			}
 		}(rssSource)

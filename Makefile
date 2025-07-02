@@ -1,12 +1,18 @@
-.PHONY: migrate-status migrate-up migrate-down migrate-refresh
-
-migrate-status:
+# Database migration staus
+.PHONY: db-status
+db-status:
 	goose status
 
-migrate-up:
+# Database migration
+.PHONY: db-migrate
+db-migrate:
 	goose up
 
-migrate-down:
+# Database rollback
+.PHONY: db-down
+db-down:
 	goose down
 
-migrate-refresh: migrate-down migrate-up
+# Database refresh
+.PHONY: db-refresh
+db-refresh: db-down db-migrate

@@ -51,7 +51,7 @@ func (s RSSSource) loadFeed(ctx context.Context, url string) (*rss.Feed, error) 
 	resCh := make(chan response)
 
 	go func() {
-		feed, err := rss.Fetch(url)
+		feed, err := rss.Fetch(url) // todo: inject this as a dependency
 		res := response{
 			feed: feed,
 			err:  err,

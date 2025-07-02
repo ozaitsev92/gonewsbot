@@ -64,7 +64,7 @@ func (s *ArticlePostgresStorage) AddArticle(ctx context.Context, article model.A
 	return id, nil
 }
 
-func (s *ArticlePostgresStorage) AllNotPosted(ctx context.Context, since time.Time, limit int) ([]model.Article, error) {
+func (s *ArticlePostgresStorage) AllNotPosted(ctx context.Context, since time.Time, limit uint64) ([]model.Article, error) {
 	conn, err := s.db.Conn(ctx)
 	if err != nil {
 		return nil, err
